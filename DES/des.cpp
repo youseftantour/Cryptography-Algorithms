@@ -344,17 +344,66 @@ string binaryToString(const string& binaryInput) {
     return asciiString;
 }
 int main() {
-    string plaintext = "HELLO123";
 
-    string binaryText = stringToBinary(plaintext);
+    string plaintext;
+    string key;
 
-    generate_keys("1010101010111011000010010001100000100111001101101100110011011101");
+    cout << "==================================" << endl;
+    cout << " DES Encryption / Decryption Demo " << endl;
+    cout << "==================================" << endl;
 
-    string encrypted = DES(binaryText, true);
-    string decrypted = DES(encrypted, false);
+    cout << "\nEnter plaintext (8 characters recommended): ";
+    getline(cin, plaintext);
 
-    cout << "Original: " << plaintext << endl;
-    cout << "Recovered: " << binaryToString(decrypted) << endl;
+    cout << "\nEnter 64-bit binary key:" << endl;
+    cout << "(Example: 1010101010111011000010010001100000100111001101101100110011011101)"
+         << endl;
+
+    cin >> key;
+
+    if (key.length() != 64) {
+        cout << "\nError: DES requires a 64-bit binary key."
+             << endl;
+        return 1;
+    }
+
+    string binaryText =
+        stringToBinary(plaintext);
+
+    generate_keys(key);
+
+    cout << "\nEncrypting..." << endl;
+
+    string encrypted =
+        DES(binaryText, true);
+
+    cout << "\nDecrypting..." << endl;
+
+    string decrypted =
+        DES(encrypted, false);
+
+    cout << "\n=================================="
+         << endl;
+
+    cout << "Original Text: "
+         << plaintext << endl;
+
+    cout << "\nEncrypted Binary:" << endl;
+    cout << encrypted << endl;
+
+    cout << "\nRecovered Text: "
+         << binaryToString(decrypted)
+         << endl;
+
+    if (plaintext == binaryToString(decrypted)) {
+        cout << "\nDES Test Passed!"
+             << endl;
+    }
+    else {
+        cout << "\nDES Test Failed!"
+             << endl;
+    }
 
     return 0;
 }
+
